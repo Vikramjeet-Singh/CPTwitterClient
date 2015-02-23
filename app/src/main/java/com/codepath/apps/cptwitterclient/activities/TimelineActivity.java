@@ -11,13 +11,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.codepath.apps.cptwitterclient.helper.EndlessScrollListener;
 import com.codepath.apps.cptwitterclient.R;
-import com.codepath.apps.cptwitterclient.adapters.TweetListAdapter;
 import com.codepath.apps.cptwitterclient.TwitterApplication;
-import com.codepath.apps.cptwitterclient.network.TwitterClient;
+import com.codepath.apps.cptwitterclient.adapters.TweetListAdapter;
+import com.codepath.apps.cptwitterclient.helper.EndlessScrollListener;
 import com.codepath.apps.cptwitterclient.models.Tweet;
-import com.codepath.apps.cptwitterclient.models.User;
+import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -102,6 +101,13 @@ public class TimelineActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Get timeline
+        populateTimelineWithMaxId(Long.MAX_VALUE);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Refresh the Timeline
@@ -126,25 +132,29 @@ public class TimelineActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            client.getCredentials(new JsonHttpResponseHandler() {
-                // Success
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    User user = User.fromJSON(response);
-                    Log.d("Debugging", response.toString());
+            Intent i = new Intent(TimelineActivity.this, ComposeTweetActivity.class);
+            startActivity(i);
 
-                    Intent i = new Intent(TimelineActivity.this, ComposeTweetActivity.class);
-                    i.putExtra("user", user);
-                    startActivityForResult(i, REQUEST_CODE);
-                }
 
-                // Failure
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d("DebugError", errorResponse.toString());
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                }
-            });
+//            client.getCredentials(new JsonHttpResponseHandler() {
+//                // Success
+//                @Override
+//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                    User user = User.fromJSON(response);
+//                    Log.d("Debugging", response.toString());
+//
+//                    Intent i = new Intent(TimelineActivity.this, ComposeTweetActivity.class);
+//                    i.putExtra("user", user);
+//                    startActivityForResult(i, REQUEST_CODE);
+//                }
+//
+//                // Failure
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                    Log.d("DebugError", errorResponse.toString());
+//                    super.onFailure(statusCode, headers, throwable, errorResponse);
+//                }
+//            });
 
             return true;
 

@@ -1,7 +1,9 @@
 package com.codepath.apps.cptwitterclient.activities;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,8 +20,8 @@ import android.widget.Toast;
 
 import com.codepath.apps.cptwitterclient.R;
 import com.codepath.apps.cptwitterclient.TwitterApplication;
-import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.codepath.apps.cptwitterclient.models.User;
+import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
@@ -43,10 +45,13 @@ public class ComposeTweetActivity extends ActionBarActivity {
         showAsPopup(ComposeTweetActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_tweet);
+        // Get shared preferences
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         // Get the client
         client = TwitterApplication.getRestClient(); // singleton client
         // Get user from intent
-        user = (User) getIntent().getSerializableExtra("user");
+//        user = (User) getIntent().getSerializableExtra("user");
+
         // Get parentId if exists
         parentId = getIntent().getLongExtra("parentId", 0);
         String parentUser = getIntent().getStringExtra("parentUsername");
@@ -60,13 +65,51 @@ public class ComposeTweetActivity extends ActionBarActivity {
             etTweet.setSelection(etTweet.getText().length());
         }
         etTweet.addTextChangedListener(getTextChangedListener());
-        // Populate information
-        tvName.setText(user.getName());
-        tvScreenName.setText(user.getScreenName());
-        // Clear user photo
-        ivUserPhoto.setImageResource(android.R.color.transparent);
-        // Populate user photo
-        Picasso.with(getApplicationContext()).load(user.getProfileImageURL()).into(ivUserPhoto);
+
+        // Main logic starts here
+        String uName = pref.getString("username", "");
+        String screenName = pref.getString("screen_name", "");
+        String profileImageUrl = pref.getString("profile_image_url", "");
+
+        if (uName.equals("") || screenName.equals("") || profileImageUrl.equals("")) {
+            client.getCredentials( new JsonHttpResponseHandler() {
+                                       // Success
+                                       @Override
+                                       public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                           User user = User.fromJSON(response);
+                                           Log.d("Debugging", response.toString());
+
+                                           SharedPreferences.Editor edit = pref.edit();
+                                           edit.putString("username", user.getName());
+                                           edit.putString("screen_name", user.getScreenName());
+                                           edit.putString("user_profile_image_url", user.getProfileImageURL());
+                                           edit.commit();
+
+                                           // Populate information
+                                           tvName.setText(user.getName());
+                                           tvScreenName.setText(user.getScreenName());
+                                           // Clear user photo
+                                           ivUserPhoto.setImageResource(android.R.color.transparent);
+                                           // Populate user photo
+                                           Picasso.with(getApplicationContext()).load(user.getProfileImageURL()).into(ivUserPhoto);
+                                       }
+
+                                       // Failure
+                                       @Override
+                                       public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                           Log.d("DebugError", errorResponse.toString());
+                                           super.onFailure(statusCode, headers, throwable, errorResponse);
+                                       }
+                                   });
+        } else {
+            // Populate information
+            tvName.setText(uName);
+            tvScreenName.setText(screenName);
+            // Clear user photo
+            ivUserPhoto.setImageResource(android.R.color.transparent);
+            // Populate user photo
+            Picasso.with(getApplicationContext()).load(profileImageUrl).into(ivUserPhoto);
+        }
     }
 
     @Override

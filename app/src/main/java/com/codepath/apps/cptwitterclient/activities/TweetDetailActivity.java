@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,14 +13,9 @@ import android.widget.TextView;
 
 import com.codepath.apps.cptwitterclient.R;
 import com.codepath.apps.cptwitterclient.TwitterApplication;
-import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.codepath.apps.cptwitterclient.models.Tweet;
-import com.codepath.apps.cptwitterclient.models.User;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 public class TweetDetailActivity extends ActionBarActivity {
 
@@ -64,27 +58,10 @@ public class TweetDetailActivity extends ActionBarActivity {
         btnReply.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            client.getCredentials(new JsonHttpResponseHandler() {
-                                                // Success
-                                                @Override
-                                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                                    User user = User.fromJSON(response);
-                                                    Log.d("Debugging", response.toString());
-
-                                                    Intent i = new Intent(TweetDetailActivity.this, ComposeTweetActivity.class);
-                                                    i.putExtra("user", user);
-                                                    i.putExtra("parentId", tweet.getUid());
-                                                    i.putExtra("parentUsername", tweet.getUser().getScreenName());
-                                                    startActivity(i);
-                                                }
-
-                                                // Failure
-                                                @Override
-                                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                                    Log.d("DebugError", errorResponse.toString());
-                                                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                                                }
-                                            });
+                                            Intent i = new Intent(TweetDetailActivity.this, ComposeTweetActivity.class);
+                                            i.putExtra("parentId", tweet.getUid());
+                                            i.putExtra("parentUsername", tweet.getUser().getScreenName());
+                                            startActivity(i);
                                         }
                                     });
 
@@ -119,4 +96,5 @@ public class TweetDetailActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

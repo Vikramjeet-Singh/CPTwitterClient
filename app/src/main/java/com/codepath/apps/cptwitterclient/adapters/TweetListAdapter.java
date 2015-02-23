@@ -2,7 +2,6 @@ package com.codepath.apps.cptwitterclient.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,9 @@ import android.widget.TextView;
 import com.codepath.apps.cptwitterclient.R;
 import com.codepath.apps.cptwitterclient.TwitterApplication;
 import com.codepath.apps.cptwitterclient.activities.ComposeTweetActivity;
-import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.codepath.apps.cptwitterclient.models.Tweet;
-import com.codepath.apps.cptwitterclient.models.User;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -41,6 +35,7 @@ public class TweetListAdapter extends ArrayAdapter<Tweet> {
     }
 
     private TwitterClient client = TwitterApplication.getRestClient();
+    private final int REQUEST_CODE = 200;
 
     public TweetListAdapter(Context context, List<Tweet> tweets) {
         super(context, android.R.layout.simple_list_item_1, tweets);
@@ -73,27 +68,12 @@ public class TweetListAdapter extends ArrayAdapter<Tweet> {
             @Override
             public void onClick(View v) {
 
-                client.getCredentials(new JsonHttpResponseHandler() {
-                    // Success
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        User user = User.fromJSON(response);
-                        Log.d("Debugging", response.toString());
 
-                        Intent i = new Intent(getContext(), ComposeTweetActivity.class);
-                        i.putExtra("user", user);
-                        i.putExtra("parentId", tweet.getUid());
-                        i.putExtra("parentUsername", tweet.getUser().getScreenName());
-                        getContext().startActivity(i);
-                    }
-
-                    // Failure
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        Log.d("DebugError", errorResponse.toString());
-                        super.onFailure(statusCode, headers, throwable, errorResponse);
-                    }
-                });
+                Intent i = new Intent(getContext(), ComposeTweetActivity.class);
+//                i.putExtra("user", user);
+                i.putExtra("parentId", tweet.getUid());
+                i.putExtra("parentUsername", tweet.getUser().getScreenName());
+                getContext().startActivity(i);
             }
         });
 
