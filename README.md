@@ -28,4 +28,4 @@ Time spent: 16-18 hours spent in total Completed user stories:
 
 Walkthrough of all the user stories:
 
-![](https://github.com/Vikramjeet-Singh/GridImageSearch/blob/master/CPTwitterClient_walkthrough.gif)
+![](https://github.com/Vikramjeet-Singh/CPTwitterClient/blob/master/CPTwitterClient_walkthrough.gif)
