@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.codepath.apps.cptwitterclient.activities.ComposeTweetActivity">
+
+    <item android:id="@+id/miTweet"
+        android:title="@string/tweet_btn_title"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/miCharCount"
+        android:orderInCategory="99"
+        android:title="@string/tweet_char_limit"
+        app:showAsAction="always"
+        android:actionViewClass="android.widget.TextView" />
+
+</menu>

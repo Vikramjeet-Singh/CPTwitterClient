@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="5dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/photo_placeholder"
+        android:focusable="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:id="@+id/tvUsername"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_alignParentTop="true"
+        android:gravity="top"
+        android:includeFontPadding = "false"
+        android:textSize="15dp"
+        android:focusable="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tweet"
+        android:id="@+id/tvBody"
+        android:layout_alignLeft="@+id/tvUsername"
+        android:layout_alignStart="@+id/tvUsername"
+        android:layout_below="@+id/tvUsername"
+        android:textSize="12dp"
+        android:textIsSelectable="false"
+        android:ellipsize="end"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:focusable="false"
+        android:minHeight="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="date"
+        android:id="@+id/tvTimeStamp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/tvUsername"
+        android:gravity="right"
+        android:focusable="false" />
+
+    <ImageButton
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/btnReply"
+        android:src="@drawable/reply"
+        android:layout_alignTop="@+id/tvRetweet"
+        android:layout_alignLeft="@+id/tvBody"
+        android:layout_alignStart="@+id/tvBody"
+        android:background="@android:color/transparent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:id="@+id/tvRetweet"
+        android:text="New Text"
+        android:layout_below="@+id/tvBody"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:drawableLeft="@drawable/retweet"
+        android:drawablePadding="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="New Text"
+        android:id="@+id/tvFavorites"
+        android:drawableLeft="@drawable/favorite"
+        android:drawablePadding="5dp"
+        android:layout_alignTop="@+id/tvRetweet"
+        android:layout_toLeftOf="@+id/tvTimeStamp"
+        android:layout_toStartOf="@+id/tvTimeStamp" />
+
+</RelativeLayout>
