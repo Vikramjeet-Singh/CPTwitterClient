@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.apps.cptwitterclient.R;
 import com.codepath.apps.cptwitterclient.TwitterApplication;
@@ -69,8 +68,6 @@ public class TweetListAdapter extends ArrayAdapter<Tweet> {
         viewHolder.btnReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 Intent i = new Intent(getContext(), ComposeTweetActivity.class);
 //                i.putExtra("user", user);
                 i.putExtra("parentId", tweet.getUid());
@@ -92,7 +89,6 @@ public class TweetListAdapter extends ArrayAdapter<Tweet> {
         viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "I am clicked", Toast.LENGTH_SHORT).show();
                 // Open Profile Activity
                 Intent i = new Intent(getContext(), ProfileActivity.class);
                 i.putExtra("user", tweet.getUser());
