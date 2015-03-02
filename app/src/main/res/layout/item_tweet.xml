@@ -12,8 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginRight="5dp"
-        android:src="@drawable/photo_placeholder"
-        android:focusable="false" />
+        android:src="@drawable/photo_placeholder" />
 
     <TextView
         android:layout_width="wrap_content"

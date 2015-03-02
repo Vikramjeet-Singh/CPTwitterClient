@@ -9,10 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.apps.cptwitterclient.R;
 import com.codepath.apps.cptwitterclient.TwitterApplication;
 import com.codepath.apps.cptwitterclient.activities.ComposeTweetActivity;
+import com.codepath.apps.cptwitterclient.activities.ProfileActivity;
 import com.codepath.apps.cptwitterclient.models.Tweet;
 import com.codepath.apps.cptwitterclient.network.TwitterClient;
 import com.squareup.picasso.Picasso;
@@ -83,8 +85,20 @@ public class TweetListAdapter extends ArrayAdapter<Tweet> {
         viewHolder.tvTimeStamp.setText(tweet.getCreatedAt());
         viewHolder.tvRetweet.setText(tweet.getRetweetCount());
         viewHolder.tvFavorites.setText(tweet.getFavoriteCount());
+
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageURL()).into(viewHolder.ivProfileImage);
+
+        viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "I am clicked", Toast.LENGTH_SHORT).show();
+                // Open Profile Activity
+                Intent i = new Intent(getContext(), ProfileActivity.class);
+                i.putExtra("user", tweet.getUser());
+                getContext().startActivity(i);
+            }
+        });
         // Return view
         return convertView;
     }

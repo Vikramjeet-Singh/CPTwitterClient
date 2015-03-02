@@ -35,7 +35,7 @@ public class TwitterClient extends OAuthBaseClient {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
     }
 
-    public void getHomeTimeline(long maxID, AsyncHttpResponseHandler handler) {
+    public void getHomeTimeline(long sinceId, long maxID, AsyncHttpResponseHandler handler) {
         if (isNetworkAvailable()) {
             // Get API
             String apiUrl = getApiUrl("statuses/home_timeline.json");
@@ -43,6 +43,47 @@ public class TwitterClient extends OAuthBaseClient {
             RequestParams params = new RequestParams();
             params.put("count", 50);
             params.put("since_id", 1);
+
+            if (maxID != Long.MAX_VALUE) {
+                params.put("max_id", maxID);
+            }
+
+            // Execute the request
+            getClient().get(apiUrl, params, handler);
+        } else {
+            Toast.makeText(context, "Network not available. Please check your network connection", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getMentionsTimeline(long sinceId, long maxID, AsyncHttpResponseHandler handler) {
+        if (isNetworkAvailable()) {
+            // Get API
+            String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+            // Create parameter list
+            RequestParams params = new RequestParams();
+            params.put("count", 50);
+            params.put("since_id", 1);
+
+            if (maxID != Long.MAX_VALUE) {
+                params.put("max_id", maxID);
+            }
+
+            // Execute the request
+            getClient().get(apiUrl, params, handler);
+        } else {
+            Toast.makeText(context, "Network not available. Please check your network connection", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getUserTimeline(String screenName, long sinceId, long maxID, AsyncHttpResponseHandler handler) {
+        if (isNetworkAvailable()) {
+            // Get API
+            String apiUrl = getApiUrl("statuses/user_timeline.json");
+            // Create parameter list
+            RequestParams params = new RequestParams();
+            params.put("count", 50);
+            params.put("since_id", 1);
+            params.put("screen_name", screenName);
 
             if (maxID != Long.MAX_VALUE) {
                 params.put("max_id", maxID);
@@ -82,6 +123,41 @@ public class TwitterClient extends OAuthBaseClient {
             Toast.makeText(context, "Network not available. Please check your network connection", Toast.LENGTH_SHORT);
         }
     }
+
+    public Boolean addFavorite(long tweetId, AsyncHttpResponseHandler handler) {
+        if (isNetworkAvailable()) {
+            // Get API
+            String apiUrl = getApiUrl("favorites/create.json");
+            // Create parameter list
+            RequestParams params = new RequestParams();
+            params.put("id", tweetId);
+            // Execute te request
+            getClient().get(apiUrl, handler);
+            return true;
+        } else {
+            Toast.makeText(context, "Network not available. Please check your network connection", Toast.LENGTH_SHORT);
+            return false;
+        }
+    }
+
+    public Boolean removeFavorite(long tweetId, AsyncHttpResponseHandler handler) {
+        if (isNetworkAvailable()) {
+            // Get API
+            String apiUrl = getApiUrl("favorites/destroy.json");
+            // Create parameter list
+            RequestParams params = new RequestParams();
+            params.put("id", tweetId);
+            // Execute te request
+            getClient().get(apiUrl, handler);
+            return true;
+        } else {
+            Toast.makeText(context, "Network not available. Please check your network connection", Toast.LENGTH_SHORT);
+            return false;
+        }
+
+    }
+
+
 
     // Check if Internet is available
     private Boolean isNetworkAvailable() {

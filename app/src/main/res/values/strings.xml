@@ -12,5 +12,7 @@
     <string name="tweet_char_limit">140</string>
     <string name="title_activity_compose_tweet">ComposeTweetActivity</string>
     <string name="title_activity_tweet_detail">TweetDetailActivity</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>

@@ -18,6 +18,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
 
 
 dependencies {
@@ -26,4 +30,9 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'com.android.support:support-v4:21.0.3'
+    // View page SliderTabStrip
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    // Active Android
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
